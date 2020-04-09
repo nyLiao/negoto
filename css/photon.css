@@ -147,7 +147,7 @@ body {
 }
 
 hr {
-  margin: 15px 0;
+  /* margin: 15px 0; */
   overflow: hidden;
   background: transparent;
   border: 0;
@@ -164,7 +164,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-  font-size: 36px;
+  font-size: 40px;
+  text-align: center;
+  font-weight: 200;
 }
 
 h2 {
@@ -200,6 +202,7 @@ h6 {
 
 .window-content {
   position: relative;
+  overflow-x: auto;
   overflow-y: auto;
   display: flex;
   flex: 1;
@@ -584,12 +587,12 @@ input[type="checkbox"] {
 }
 
 .form-control {
-  display: inline-block;
+  /* display: inline-block; */
   width: 100%;
   min-height: 25px;
   padding: 5px 10px;
   font-size: 13px;
-  line-height: 1.6;
+  line-height: 1.35;
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 4px;
@@ -602,6 +605,7 @@ input[type="checkbox"] {
 
 textarea {
   height: auto;
+  overflow-y: visible;
 }
 
 .form-group {
@@ -697,7 +701,9 @@ img {
 .list-group * {
   margin: 0;
   white-space: nowrap;
-  overflow: hidden;
+  overflow: auto;
+  overflow-x: auto;
+  overflow-y: auto;
   text-overflow: ellipsis;
 }
 

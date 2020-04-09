@@ -13,8 +13,10 @@
         "start": "electron ."
     },
     "dependencies": {
-        "app": "^0.1.0",
+        "electron-context-menu": "^0.16.0",
+        "electron-debug": "^3.0.1",
         "electron-store": "^5.1.1",
+        "electron-unhandled": "^3.0.2",
         "electron-util": "^0.14.0",
         "thrift": "^0.12.0"
     }
