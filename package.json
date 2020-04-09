@@ -1,0 +1,21 @@
+{
+    "name": "SomeTextGenerator",
+    "version": "0.1.0",
+    "description": "Generate some text!",
+    "license": "MIT",
+    "author": {
+        "name": "nyLiao",
+        "url": "https://github.com/nyLiao"
+    },
+    "main": "index.js",
+    "repository": {},
+    "scripts": {
+        "start": "electron ."
+    },
+    "dependencies": {
+        "app": "^0.1.0",
+        "electron-store": "^5.1.1",
+        "electron-util": "^0.14.0",
+        "thrift": "^0.12.0"
+    }
+}
