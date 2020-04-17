@@ -14,32 +14,79 @@
 <body>
     <div class="window">
         <!-- .toolbar-header -->
-        <!-- <header class="toolbar toolbar-header">
-        <h1 class="title">Photon</h1>
-        </header> -->
+        <header class="toolbar toolbar-header">
+            <!-- <h1 class="title">Photon</h1> -->
+            <div class="toolbar-actions">
+                <div class="btn-group">
+                    <button class="btn btn-default" id="btnAdd">
+                        <span class="icon icon-plus"></span>
+                    </button>
+                    <button class="btn btn-default">
+                        <span class="icon icon-ccw"></span>
+                    </button>
+                    <!-- <button class="btn btn-default active">
+                        <span class="icon icon-popup"></span>
+                    </button> -->
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-default btn-dropdown">
+                        <span class="icon icon-gauge"></span>
+                    </button>
+                    <button class="btn btn-default btn-dropdown">
+                        <span class="icon icon-flow-tree"></span>
+                    </button>
+                    <button class="btn btn-default btn-dropdown">
+                        <span class="icon icon-chart-area"></span>
+                    </button>
+                    <button class="btn btn-default btn-dropdown">
+                        <span class="icon icon-thermometer"></span>
+                    </button>
+                </div>
+                <button class="btn btn-default pull-right">
+                    <span class="icon icon-export"></span>
+                </button>
+            </div>
+        </header>
 
         <!-- .window-content -->
         <div class="window-content">
             <div class="pane">
                 <div class="padded-more">
-                    <h1>Some Text Generator</h1>
+                    <h1>negoto</h1>
+                    <h5>The text generator base on GPT-2 model</h5>
                     <hr width=70%>
                 </div>
 
-                <ul class="list-group">
+                <ul class="list-group" id="lContent">
                     <li class="list-group-item">
-                        <label>Paragraph</label>
+                        <label>Paragraph 1</label>
                         <br>
-                        <textarea class="form-control" id="txtin" placeholder="Input beginning..." rows="3"></textarea>
+                        <textarea class="form-control textin" id="txtin1" placeholder="Input beginning..."></textarea>
                         <br>
-                        <textarea class="form-control" id="result" rows="8"></textarea>
+                        <textarea class="form-control textout" id="result1"></textarea>
                         <br>
 
-                        <button class="btn btn-default" id="btnClr">
-                            Clear
+                        <button class="btn btn-default" id="btnClr" onclick="document.getElementById('txtin').value='';document.getElementById('result').value=''">
+                            <span class="icon icon-cancel-circled" style="color:black"></span> &nbsp;Clear
                         </button>
                         <button class="btn btn-primary pull-right" id="btnGen">
-                            Generate!
+                            <span class="icon icon-lamp" id="lamp" style="color:white"></span> &nbsp;Generate!
+                        </button>
+                    </li>
+
+                    <li class="list-group-item">
+                        <label>Paragraph 2</label>
+                        <br>
+                        <textarea class="form-control textin" id="txtin2" placeholder="Input beginning..."></textarea>
+                        <br>
+                        <textarea class="form-control textout" id="result2"></textarea>
+                        <br>
+
+                        <button class="btn btn-default" id="btnClr" onclick="document.getElementById('txtin').value='';document.getElementById('result').value=''">
+                            <span class="icon icon-cancel-circled" style="color:black"></span> &nbsp;Clear
+                        </button>
+                        <button class="btn btn-primary pull-right" id="btnGen">
+                            <span class="icon icon-lamp" id="lamp" style="color:white"></span> &nbsp;Generate!
                         </button>
                     </li>
                 </ul>
