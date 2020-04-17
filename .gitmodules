@@ -1,0 +1,3 @@
+[submodule "GPT2-Chinese"]
+	path = GPT2-Chinese
+	url = https://github.com/nyLiao/GPT2-Chinese
