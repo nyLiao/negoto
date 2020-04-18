@@ -585,6 +585,7 @@ h6 {
 label {
   display: inline-block;
   font-size: 13px;
+  font-weight: 200;
   margin-bottom: 5px;
   white-space: nowrap;
   overflow: hidden;
@@ -732,6 +733,7 @@ img {
 
 .list-group-item {
   padding: 10px;
+  padding-bottom: 25px;
   font-size: 12px;
   color: #414142;
   border-top: 1px solid #ddd;

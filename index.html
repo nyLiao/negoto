@@ -9,6 +9,7 @@
 
     <!-- Javascript -->
     <!-- <script src="js/menu.js" charset="utf-8"></script> -->
+    <!-- <script src="js/jquery.min.js" charset="utf-8"></script> -->
 </head>
 
 <body>
@@ -21,7 +22,7 @@
                     <button class="btn btn-default" id="btnAdd">
                         <span class="icon icon-plus"></span>
                     </button>
-                    <button class="btn btn-default">
+                    <button class="btn btn-default" id="btnRfr">
                         <span class="icon icon-ccw"></span>
                     </button>
                     <!-- <button class="btn btn-default active">
@@ -42,7 +43,7 @@
                         <span class="icon icon-thermometer"></span>
                     </button>
                 </div>
-                <button class="btn btn-default pull-right">
+                <button class="btn btn-default pull-right" id="btnShr">
                     <span class="icon icon-export"></span>
                 </button>
             </div>
@@ -57,41 +58,24 @@
                     <hr width=70%>
                 </div>
 
-                <ul class="list-group" id="lContent">
-                    <li class="list-group-item">
+                <ul class="list-group">
+                    <!-- <li class="list-group-item" id="li1">
                         <label>Paragraph 1</label>
-                        <br>
-                        <textarea class="form-control textin" id="txtin1" placeholder="Input beginning..."></textarea>
-                        <br>
-                        <textarea class="form-control textout" id="result1"></textarea>
-                        <br>
-
-                        <button class="btn btn-default" id="btnClr" onclick="document.getElementById('txtin').value='';document.getElementById('result').value=''">
+                        <textarea class="form-control textin" placeholder="Input beginning..."></textarea>
+                        <textarea class="form-control textout"></textarea>
+                        <button class="btn btn-default">
                             <span class="icon icon-cancel-circled" style="color:black"></span> &nbsp;Clear
                         </button>
-                        <button class="btn btn-primary pull-right" id="btnGen">
-                            <span class="icon icon-lamp" id="lamp" style="color:white"></span> &nbsp;Generate!
+                        <button class="btn btn-primary pull-right">
+                            <span class="icon icon-lamp" style="color:white"></span> &nbsp;Generate!
                         </button>
-                    </li>
-
-                    <li class="list-group-item">
-                        <label>Paragraph 2</label>
-                        <br>
-                        <textarea class="form-control textin" id="txtin2" placeholder="Input beginning..."></textarea>
-                        <br>
-                        <textarea class="form-control textout" id="result2"></textarea>
-                        <br>
-
-                        <button class="btn btn-default" id="btnClr" onclick="document.getElementById('txtin').value='';document.getElementById('result').value=''">
-                            <span class="icon icon-cancel-circled" style="color:black"></span> &nbsp;Clear
-                        </button>
-                        <button class="btn btn-primary pull-right" id="btnGen">
-                            <span class="icon icon-lamp" id="lamp" style="color:white"></span> &nbsp;Generate!
-                        </button>
-                    </li>
+                    </li> -->
                 </ul>
-            </div>
 
+                <div class="padded-more">
+                    <hr width=70%>
+                </div>
+            </div>
         </div>
     </div>
 </body>
