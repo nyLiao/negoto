@@ -19,10 +19,10 @@ all_structs = []
 
 
 class Iface(object):
-    def test1(self, txtin):
+    def py_gen_ph(self, inputs):
         """
         Parameters:
-         - txtin
+         - inputs
 
         """
         pass
@@ -35,24 +35,24 @@ class Client(Iface):
             self._oprot = oprot
         self._seqid = 0
 
-    def test1(self, txtin):
+    def py_gen_ph(self, inputs):
         """
         Parameters:
-         - txtin
+         - inputs
 
         """
-        self.send_test1(txtin)
-        return self.recv_test1()
+        self.send_py_gen_ph(inputs)
+        return self.recv_py_gen_ph()
 
-    def send_test1(self, txtin):
-        self._oprot.writeMessageBegin('test1', TMessageType.CALL, self._seqid)
-        args = test1_args()
-        args.txtin = txtin
+    def send_py_gen_ph(self, inputs):
+        self._oprot.writeMessageBegin('py_gen_ph', TMessageType.CALL, self._seqid)
+        args = py_gen_ph_args()
+        args.inputs = inputs
         args.write(self._oprot)
         self._oprot.writeMessageEnd()
         self._oprot.trans.flush()
 
-    def recv_test1(self):
+    def recv_py_gen_ph(self):
         iprot = self._iprot
         (fname, mtype, rseqid) = iprot.readMessageBegin()
         if mtype == TMessageType.EXCEPTION:
@@ -60,19 +60,19 @@ class Client(Iface):
             x.read(iprot)
             iprot.readMessageEnd()
             raise x
-        result = test1_result()
+        result = py_gen_ph_result()
         result.read(iprot)
         iprot.readMessageEnd()
         if result.success is not None:
             return result.success
-        raise TApplicationException(TApplicationException.MISSING_RESULT, "test1 failed: unknown result")
+        raise TApplicationException(TApplicationException.MISSING_RESULT, "py_gen_ph failed: unknown result")
 
 
 class Processor(Iface, TProcessor):
     def __init__(self, handler):
         self._handler = handler
         self._processMap = {}
-        self._processMap["test1"] = Processor.process_test1
+        self._processMap["py_gen_ph"] = Processor.process_py_gen_ph
 
     def process(self, iprot, oprot):
         (name, type, seqid) = iprot.readMessageBegin()
@@ -89,13 +89,13 @@ class Processor(Iface, TProcessor):
             self._processMap[name](self, seqid, iprot, oprot)
         return True
 
-    def process_test1(self, seqid, iprot, oprot):
-        args = test1_args()
+    def process_py_gen_ph(self, seqid, iprot, oprot):
+        args = py_gen_ph_args()
         args.read(iprot)
         iprot.readMessageEnd()
-        result = test1_result()
+        result = py_gen_ph_result()
         try:
-            result.success = self._handler.test1(args.txtin)
+            result.success = self._handler.py_gen_ph(args.inputs)
             msg_type = TMessageType.REPLY
         except TTransport.TTransportException:
             raise
@@ -107,7 +107,7 @@ class Processor(Iface, TProcessor):
             logging.exception('Unexpected exception in handler')
             msg_type = TMessageType.EXCEPTION
             result = TApplicationException(TApplicationException.INTERNAL_ERROR, 'Internal error')
-        oprot.writeMessageBegin("test1", msg_type, seqid)
+        oprot.writeMessageBegin("py_gen_ph", msg_type, seqid)
         result.write(oprot)
         oprot.writeMessageEnd()
         oprot.trans.flush()
@@ -115,16 +115,16 @@ class Processor(Iface, TProcessor):
 # HELPER FUNCTIONS AND STRUCTURES
 
 
-class test1_args(object):
+class py_gen_ph_args(object):
     """
     Attributes:
-     - txtin
+     - inputs
 
     """
 
 
-    def __init__(self, txtin=None,):
-        self.txtin = txtin
+    def __init__(self, inputs=None,):
+        self.inputs = inputs
 
     def read(self, iprot):
         if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
@@ -137,7 +137,7 @@ class test1_args(object):
                 break
             if fid == 1:
                 if ftype == TType.STRING:
-                    self.txtin = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
+                    self.inputs = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
                 else:
                     iprot.skip(ftype)
             else:
@@ -149,10 +149,10 @@ class test1_args(object):
         if oprot._fast_encode is not None and self.thrift_spec is not None:
             oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
             return
-        oprot.writeStructBegin('test1_args')
-        if self.txtin is not None:
-            oprot.writeFieldBegin('txtin', TType.STRING, 1)
-            oprot.writeString(self.txtin.encode('utf-8') if sys.version_info[0] == 2 else self.txtin)
+        oprot.writeStructBegin('py_gen_ph_args')
+        if self.inputs is not None:
+            oprot.writeFieldBegin('inputs', TType.STRING, 1)
+            oprot.writeString(self.inputs.encode('utf-8') if sys.version_info[0] == 2 else self.inputs)
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
         oprot.writeStructEnd()
@@ -170,14 +170,14 @@ class test1_args(object):
 
     def __ne__(self, other):
         return not (self == other)
-all_structs.append(test1_args)
-test1_args.thrift_spec = (
+all_structs.append(py_gen_ph_args)
+py_gen_ph_args.thrift_spec = (
     None,  # 0
-    (1, TType.STRING, 'txtin', 'UTF8', None, ),  # 1
+    (1, TType.STRING, 'inputs', 'UTF8', None, ),  # 1
 )
 
 
-class test1_result(object):
+class py_gen_ph_result(object):
     """
     Attributes:
      - success
@@ -211,7 +211,7 @@ class test1_result(object):
         if oprot._fast_encode is not None and self.thrift_spec is not None:
             oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
             return
-        oprot.writeStructBegin('test1_result')
+        oprot.writeStructBegin('py_gen_ph_result')
         if self.success is not None:
             oprot.writeFieldBegin('success', TType.STRING, 0)
             oprot.writeString(self.success.encode('utf-8') if sys.version_info[0] == 2 else self.success)
@@ -232,8 +232,8 @@ class test1_result(object):
 
     def __ne__(self, other):
         return not (self == other)
-all_structs.append(test1_result)
-test1_result.thrift_spec = (
+all_structs.append(py_gen_ph_result)
+py_gen_ph_result.thrift_spec = (
     (0, TType.STRING, 'success', 'UTF8', None, ),  # 0
 )
 fix_spec(all_structs)

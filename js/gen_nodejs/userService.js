@@ -13,16 +13,16 @@ var Q = thrift.Q;
 var ttypes = require('./api_types');
 //HELPER FUNCTIONS AND STRUCTURES
 
-var userService_test1_args = function(args) {
-  this.txtin = null;
+var userService_py_gen_ph_args = function(args) {
+  this.inputs = null;
   if (args) {
-    if (args.txtin !== undefined && args.txtin !== null) {
-      this.txtin = args.txtin;
+    if (args.inputs !== undefined && args.inputs !== null) {
+      this.inputs = args.inputs;
     }
   }
 };
-userService_test1_args.prototype = {};
-userService_test1_args.prototype.read = function(input) {
+userService_py_gen_ph_args.prototype = {};
+userService_py_gen_ph_args.prototype.read = function(input) {
   input.readStructBegin();
   while (true) {
     var ret = input.readFieldBegin();
@@ -34,7 +34,7 @@ userService_test1_args.prototype.read = function(input) {
     switch (fid) {
       case 1:
       if (ftype == Thrift.Type.STRING) {
-        this.txtin = input.readString();
+        this.inputs = input.readString();
       } else {
         input.skip(ftype);
       }
@@ -51,11 +51,11 @@ userService_test1_args.prototype.read = function(input) {
   return;
 };
 
-userService_test1_args.prototype.write = function(output) {
-  output.writeStructBegin('userService_test1_args');
-  if (this.txtin !== null && this.txtin !== undefined) {
-    output.writeFieldBegin('txtin', Thrift.Type.STRING, 1);
-    output.writeString(this.txtin);
+userService_py_gen_ph_args.prototype.write = function(output) {
+  output.writeStructBegin('userService_py_gen_ph_args');
+  if (this.inputs !== null && this.inputs !== undefined) {
+    output.writeFieldBegin('inputs', Thrift.Type.STRING, 1);
+    output.writeString(this.inputs);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -63,7 +63,7 @@ userService_test1_args.prototype.write = function(output) {
   return;
 };
 
-var userService_test1_result = function(args) {
+var userService_py_gen_ph_result = function(args) {
   this.success = null;
   if (args) {
     if (args.success !== undefined && args.success !== null) {
@@ -71,8 +71,8 @@ var userService_test1_result = function(args) {
     }
   }
 };
-userService_test1_result.prototype = {};
-userService_test1_result.prototype.read = function(input) {
+userService_py_gen_ph_result.prototype = {};
+userService_py_gen_ph_result.prototype.read = function(input) {
   input.readStructBegin();
   while (true) {
     var ret = input.readFieldBegin();
@@ -101,8 +101,8 @@ userService_test1_result.prototype.read = function(input) {
   return;
 };
 
-userService_test1_result.prototype.write = function(output) {
-  output.writeStructBegin('userService_test1_result');
+userService_py_gen_ph_result.prototype.write = function(output) {
+  output.writeStructBegin('userService_py_gen_ph_result');
   if (this.success !== null && this.success !== undefined) {
     output.writeFieldBegin('success', Thrift.Type.STRING, 0);
     output.writeString(this.success);
@@ -123,7 +123,7 @@ userServiceClient.prototype = {};
 userServiceClient.prototype.seqid = function() { return this._seqid; };
 userServiceClient.prototype.new_seqid = function() { return this._seqid += 1; };
 
-userServiceClient.prototype.test1 = function(txtin, callback) {
+userServiceClient.prototype.py_gen_ph = function(inputs, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -134,22 +134,22 @@ userServiceClient.prototype.test1 = function(txtin, callback) {
         _defer.resolve(result);
       }
     };
-    this.send_test1(txtin);
+    this.send_py_gen_ph(inputs);
     return _defer.promise;
   } else {
     this._reqs[this.seqid()] = callback;
-    this.send_test1(txtin);
+    this.send_py_gen_ph(inputs);
   }
 };
 
-userServiceClient.prototype.send_test1 = function(txtin) {
+userServiceClient.prototype.send_py_gen_ph = function(inputs) {
   var output = new this.pClass(this.output);
   var params = {
-    txtin: txtin
+    inputs: inputs
   };
-  var args = new userService_test1_args(params);
+  var args = new userService_py_gen_ph_args(params);
   try {
-    output.writeMessageBegin('test1', Thrift.MessageType.CALL, this.seqid());
+    output.writeMessageBegin('py_gen_ph', Thrift.MessageType.CALL, this.seqid());
     args.write(output);
     output.writeMessageEnd();
     return this.output.flush();
@@ -163,7 +163,7 @@ userServiceClient.prototype.send_test1 = function(txtin) {
   }
 };
 
-userServiceClient.prototype.recv_test1 = function(input,mtype,rseqid) {
+userServiceClient.prototype.recv_py_gen_ph = function(input,mtype,rseqid) {
   var callback = this._reqs[rseqid] || function() {};
   delete this._reqs[rseqid];
   if (mtype == Thrift.MessageType.EXCEPTION) {
@@ -172,14 +172,14 @@ userServiceClient.prototype.recv_test1 = function(input,mtype,rseqid) {
     input.readMessageEnd();
     return callback(x);
   }
-  var result = new userService_test1_result();
+  var result = new userService_py_gen_ph_result();
   result.read(input);
   input.readMessageEnd();
 
   if (null !== result.success) {
     return callback(null, result.success);
   }
-  return callback('test1 failed: unknown result');
+  return callback('py_gen_ph failed: unknown result');
 };
 var userServiceProcessor = exports.Processor = function(handler) {
   this._handler = handler;
@@ -198,36 +198,36 @@ userServiceProcessor.prototype.process = function(input, output) {
     output.flush();
   }
 };
-userServiceProcessor.prototype.process_test1 = function(seqid, input, output) {
-  var args = new userService_test1_args();
+userServiceProcessor.prototype.process_py_gen_ph = function(seqid, input, output) {
+  var args = new userService_py_gen_ph_args();
   args.read(input);
   input.readMessageEnd();
-  if (this._handler.test1.length === 1) {
-    Q.fcall(this._handler.test1.bind(this._handler),
-      args.txtin
+  if (this._handler.py_gen_ph.length === 1) {
+    Q.fcall(this._handler.py_gen_ph.bind(this._handler),
+      args.inputs
     ).then(function(result) {
-      var result_obj = new userService_test1_result({success: result});
-      output.writeMessageBegin("test1", Thrift.MessageType.REPLY, seqid);
+      var result_obj = new userService_py_gen_ph_result({success: result});
+      output.writeMessageBegin("py_gen_ph", Thrift.MessageType.REPLY, seqid);
       result_obj.write(output);
       output.writeMessageEnd();
       output.flush();
     }).catch(function (err) {
       var result;
       result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
-      output.writeMessageBegin("test1", Thrift.MessageType.EXCEPTION, seqid);
+      output.writeMessageBegin("py_gen_ph", Thrift.MessageType.EXCEPTION, seqid);
       result.write(output);
       output.writeMessageEnd();
       output.flush();
     });
   } else {
-    this._handler.test1(args.txtin, function (err, result) {
+    this._handler.py_gen_ph(args.inputs, function (err, result) {
       var result_obj;
       if ((err === null || typeof err === 'undefined')) {
-        result_obj = new userService_test1_result((err !== null || typeof err === 'undefined') ? err : {success: result});
-        output.writeMessageBegin("test1", Thrift.MessageType.REPLY, seqid);
+        result_obj = new userService_py_gen_ph_result((err !== null || typeof err === 'undefined') ? err : {success: result});
+        output.writeMessageBegin("py_gen_ph", Thrift.MessageType.REPLY, seqid);
       } else {
         result_obj = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
-        output.writeMessageBegin("test1", Thrift.MessageType.EXCEPTION, seqid);
+        output.writeMessageBegin("py_gen_ph", Thrift.MessageType.EXCEPTION, seqid);
       }
       result_obj.write(output);
       output.writeMessageEnd();

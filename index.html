@@ -25,24 +25,99 @@
                     <button class="btn btn-default" id="btnRfr">
                         <span class="icon icon-ccw"></span>
                     </button>
-                    <!-- <button class="btn btn-default active">
-                        <span class="icon icon-popup"></span>
-                    </button> -->
                 </div>
+
                 <div class="btn-group">
-                    <button class="btn btn-default btn-dropdown">
+                    <button class="btn btn-default btn-dropdown dropdown" id="btnLen">
                         <span class="icon icon-gauge"></span>
+                        <span>&nbsp;</span>
+                        <span class="value-block" id="valLen"></span>
+                        <div class="dropdown-content">
+                            <div>
+                                <span class="icon icon-gauge"></span>
+                                &nbsp;&nbsp;Length:&nbsp;&nbsp;
+                                <span class="text-light value-block" id="valLen"></span>
+                            </div>
+                            <div class="inline-center">
+                                <label>10</label>
+                                <input type="range" id="sldLen" min="10" max="500" value="300">
+                                <label>500</label>
+                            </div>
+                            <div class="text-note">
+                                Max length of generated paragraph.
+                            </div>
+                        </div>
                     </button>
-                    <button class="btn btn-default btn-dropdown">
-                        <span class="icon icon-flow-tree"></span>
-                    </button>
-                    <button class="btn btn-default btn-dropdown">
-                        <span class="icon icon-chart-area"></span>
-                    </button>
-                    <button class="btn btn-default btn-dropdown">
+
+                    <button class="btn btn-default btn-dropdown dropdown" id="btnTmp">
                         <span class="icon icon-thermometer"></span>
+                        <span>&nbsp;</span>
+                        <span class="value-block" id="valTmp"></span>
+                        <div class="dropdown-content">
+                            <div>
+                                <span class="icon icon-thermometer"></span>
+                                &nbsp;&nbsp;Temperature:&nbsp;&nbsp;
+                                <span class="text-light value-block" id="valTmp"></span>
+                            </div>
+                            <div class="inline-center">
+                                <label>0.1</label>
+                                <input type="range" id="sldTmp" min="1" max="50" value="15">
+                                <label>5</label>
+                            </div>
+                            <div class="text-note">
+                                Higher temperature provides higher <br>
+                                generation creativity.
+                            </div>
+                        </div>
+                    </button>
+
+                    <button class="btn btn-default btn-dropdown dropdown" id="btnTpk">
+                        <span class="icon icon-flow-tree"></span>
+                        <span>&nbsp;</span>
+                        <span class="value-block" id="valTpk"></span>
+                        <div class="dropdown-content">
+                            <div>
+                                <span class="icon icon-flow-tree"></span>
+                                &nbsp;&nbsp;Top-k:&nbsp;&nbsp;
+                                <span class="text-light value-block" id="valTpk"></span>
+                            </div>
+                            <div class="inline-center">
+                                <label>1</label>
+                                <input type="range" id="sldTpk" min="1" max="16" value="4">
+                                <label>16</label>
+                            </div>
+                            <div class="text-note">
+                                Search for top k candidates with best <br>
+                                probability when generating. Higher k <br>
+                                promises less reliability.
+                            </div>
+                        </div>
+                    </button>
+
+                    <button class="btn btn-default btn-dropdown dropdown" id="btnTpp">
+                        <span class="icon icon-chart-area"></span>
+                        <span>&nbsp;</span>
+                        <span class="value-block" id="valTpp"></span>
+                        <div class="dropdown-content">
+                            <div>
+                                <span class="icon icon-chart-area"></span>
+                                &nbsp;&nbsp;Top-p:&nbsp;&nbsp;
+                                <span class="text-light value-block" id="valTpp"></span>
+                            </div>
+                            <div class="inline-center">
+                                <label>0</label>
+                                <input type="range" id="sldTpp" min="0" max="40" value="10">
+                                <label>4</label>
+                            </div>
+                            <div class="text-note">
+                                Only keep candidates with cumulative <br>
+                                probability above p. Higher p ignores <br>
+                                less frequent words.
+                            </div>
+                        </div>
                     </button>
                 </div>
+
                 <button class="btn btn-default pull-right" id="btnShr">
                     <span class="icon icon-export"></span>
                 </button>
@@ -60,7 +135,7 @@
 
                 <ul class="list-group">
                     <!-- <li class="list-group-item" id="li1">
-                        <label>Paragraph 1</label>
+                        <label>Paragraph 0</label>
                         <textarea class="form-control textin" placeholder="Input beginning..."></textarea>
                         <textarea class="form-control textout"></textarea>
                         <button class="btn btn-default">

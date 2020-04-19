@@ -2,9 +2,9 @@
 //
 // by nyLiao, 2020
 
-var events = require('events')
-var fs = require('fs')
-var thrift = require('thrift')
+const events = require('events')
+const fs = require('fs')
+const thrift = require('thrift')
 
 // Init
 var eventEmitter = new events.EventEmitter()    // event manager watching textarea value
@@ -17,7 +17,7 @@ var userService = require('./gen_nodejs/userService.js')
 var thriftConnection = thrift.createConnection('127.0.0.1', 6161)
 var thriftClient = thrift.createClient(userService, thriftConnection)
 thriftConnection.on("error", function(e) {
-    console.log(e)
+    console.log('Thrift Error:\n' + e)
 });
 
 // Bind list item activities
@@ -39,7 +39,11 @@ function bindListItem(num) {
     // Generate button
     btnGen.addEventListener('click', () => {
         let dic = {
-            txtin: textin.value
+            inputs: textin.value
+            // length: document.querySelector('#sldLen').value,
+            // temp: document.querySelector('#sldTmp').value / 10,
+            // topk: document.querySelector('#sldTpk').value,
+            // topp: document.querySelector('#sldTpp').value / 10
         }
         dic = JSON.stringify(dic)
 
@@ -49,7 +53,7 @@ function bindListItem(num) {
 
         // Get result
         result.value = ''
-        thriftClient.test1(dic, (error, res) => {
+        thriftClient.py_gen_ph(dic, (error, res) => {
             if (error) {
                 console.error(error)
             } else {
@@ -126,10 +130,40 @@ document.getElementById('btnRfr').onclick = () => {
 
 // Export text to txt
 document.getElementById('btnShr').onclick = () => {
-    var outFlie = fs.createWriteStream('./outputs/output.txt', {encoding:'utf8'})
+    var outPath = './outputs/output.txt'
+    var outFlie = fs.createWriteStream(outPath, {encoding:'utf8'})
     for (var i = 0; i < document.querySelectorAll(".textout").length; i++) {
         para = document.querySelectorAll(".textout")[i].value
         outFlie.write(para + '\n\n')
     }
     outFlie.end()
+    child_process.exec("open " + outPath, (err, sto) => {
+        console.log(sto)
+    })
 }
+
+// Function of refreshing slider value
+function sld2val(sldId, valId, handleFunc) {
+    let sld = document.querySelector(sldId)
+    for (var i = 0; i < document.querySelectorAll(valId).length; i++) {
+        handleFunc(document.querySelectorAll(valId)[i], sld.value)
+    }
+    sld.oninput = () => {
+        for (var i = 0; i < document.querySelectorAll(valId).length; i++) {
+            handleFunc(document.querySelectorAll(valId)[i], sld.value)
+        }
+    }
+}
+// Toolbar parameters adjustment
+sld2val("#sldLen", "#valLen", (val, value) => {
+    val.innerHTML = value
+})
+sld2val("#sldTmp", "#valTmp", (val, value) => {
+    val.innerHTML = value / 10
+})
+sld2val("#sldTpk", "#valTpk", (val, value) => {
+    val.innerHTML = value
+})
+sld2val("#sldTpp", "#valTpp", (val, value) => {
+    val.innerHTML = value / 10
+})

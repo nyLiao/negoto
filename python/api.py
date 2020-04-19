@@ -18,30 +18,27 @@ from thrift.server import TServer
 
 from gen_py.api import userService
 
-sys.path.append('../GPT2-Chinese/')
+sys.path.append('./GPT2-Chinese/')
 from generate_class import genModel
 
-# class Test:
-#     count = 0
-#
-#     def test1(self, dic):
-#         dic = json.loads(dic)
-#         self.count += 1
-#         strr = 'Hello x{}, {}!'.format(self.count, dic["txtin"])
-#         time.sleep(2)
-#         return strr
 
-class Test(genModel):
-    def test1(self, dic):
+class pyModel(genModel):
+    def py_gen_ph(self, dic):
         dic = json.loads(dic)
-        inputs = dic["txtin"]
-        strr = self.gen_ph(inputs, length=300, topk=8, topp=1)
+        inputs = dic["inputs"]
+        # length = int(dic["length"])
+        # temp = float(dic["temp"])
+        # topk = int(dic["topk"])
+        # topp = float(dic["topp"])
+        # strr = self.gen_ph(inputs, length=length, temperature=temp, topk=topk, topp=topp)
+        strr = self.gen_ph(inputs, length=100, temperature=1.5, topk=2, topp=1.)
         return strr
 
 
 if __name__ == "__main__":
     # Init class process
-    handler = Test(model_path='../GPT2-Chinese//model/model_epoch7', tokenizer_path='../GPT2-Chinese//model/model_epoch7/vocab.txt')
+    print("Starting server in python...")
+    handler = pyModel(model_path='./GPT2-Chinese//model/model_epoch7', tokenizer_path='./GPT2-Chinese//model/model_epoch7/vocab.txt')
     processor = userService.Processor(handler)
 
     # Transport layer
@@ -52,6 +49,6 @@ if __name__ == "__main__":
     pfactory = TBinaryProtocol.TBinaryProtocolFactory()
     # Establish server
     server = TServer.TThreadedServer(processor, transport, tfactory, pfactory)
-    print("Starting server in python")
+    print("Server started")
     server.serve()
-    print("Done")
+    print("Server closed")

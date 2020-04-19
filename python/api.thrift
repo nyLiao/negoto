@@ -1,3 +1,3 @@
 service userService {
-    string test1(1:string txtin)
+    string py_gen_ph(1:string inputs)
 }

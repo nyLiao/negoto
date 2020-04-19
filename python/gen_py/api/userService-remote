@@ -24,7 +24,7 @@ if len(sys.argv) <= 1 or sys.argv[1] == '--help':
     print('Usage: ' + sys.argv[0] + ' [-h host[:port]] [-u url] [-f[ramed]] [-s[sl]] [-novalidate] [-ca_certs certs] [-keyfile keyfile] [-certfile certfile] function [arg1 [arg2...]]')
     print('')
     print('Functions:')
-    print('  string test1(string txtin)')
+    print('  string py_gen_ph(string inputs)')
     print('')
     sys.exit(0)
 
@@ -104,11 +104,11 @@ protocol = TBinaryProtocol(transport)
 client = userService.Client(protocol)
 transport.open()
 
-if cmd == 'test1':
+if cmd == 'py_gen_ph':
     if len(args) != 1:
-        print('test1 requires 1 args')
+        print('py_gen_ph requires 1 args')
         sys.exit(1)
-    pp.pprint(client.test1(args[0],))
+    pp.pprint(client.py_gen_ph(args[0],))
 
 else:
     print('Unrecognized method %s' % cmd)
