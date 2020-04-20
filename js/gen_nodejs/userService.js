@@ -14,10 +14,10 @@ var ttypes = require('./api_types');
 //HELPER FUNCTIONS AND STRUCTURES
 
 var userService_py_gen_ph_args = function(args) {
-  this.inputs = null;
+  this.dic = null;
   if (args) {
-    if (args.inputs !== undefined && args.inputs !== null) {
-      this.inputs = args.inputs;
+    if (args.dic !== undefined && args.dic !== null) {
+      this.dic = args.dic;
     }
   }
 };
@@ -34,7 +34,7 @@ userService_py_gen_ph_args.prototype.read = function(input) {
     switch (fid) {
       case 1:
       if (ftype == Thrift.Type.STRING) {
-        this.inputs = input.readString();
+        this.dic = input.readString();
       } else {
         input.skip(ftype);
       }
@@ -53,9 +53,9 @@ userService_py_gen_ph_args.prototype.read = function(input) {
 
 userService_py_gen_ph_args.prototype.write = function(output) {
   output.writeStructBegin('userService_py_gen_ph_args');
-  if (this.inputs !== null && this.inputs !== undefined) {
-    output.writeFieldBegin('inputs', Thrift.Type.STRING, 1);
-    output.writeString(this.inputs);
+  if (this.dic !== null && this.dic !== undefined) {
+    output.writeFieldBegin('dic', Thrift.Type.STRING, 1);
+    output.writeString(this.dic);
     output.writeFieldEnd();
   }
   output.writeFieldStop();
@@ -123,7 +123,7 @@ userServiceClient.prototype = {};
 userServiceClient.prototype.seqid = function() { return this._seqid; };
 userServiceClient.prototype.new_seqid = function() { return this._seqid += 1; };
 
-userServiceClient.prototype.py_gen_ph = function(inputs, callback) {
+userServiceClient.prototype.py_gen_ph = function(dic, callback) {
   this._seqid = this.new_seqid();
   if (callback === undefined) {
     var _defer = Q.defer();
@@ -134,18 +134,18 @@ userServiceClient.prototype.py_gen_ph = function(inputs, callback) {
         _defer.resolve(result);
       }
     };
-    this.send_py_gen_ph(inputs);
+    this.send_py_gen_ph(dic);
     return _defer.promise;
   } else {
     this._reqs[this.seqid()] = callback;
-    this.send_py_gen_ph(inputs);
+    this.send_py_gen_ph(dic);
   }
 };
 
-userServiceClient.prototype.send_py_gen_ph = function(inputs) {
+userServiceClient.prototype.send_py_gen_ph = function(dic) {
   var output = new this.pClass(this.output);
   var params = {
-    inputs: inputs
+    dic: dic
   };
   var args = new userService_py_gen_ph_args(params);
   try {
@@ -204,7 +204,7 @@ userServiceProcessor.prototype.process_py_gen_ph = function(seqid, input, output
   input.readMessageEnd();
   if (this._handler.py_gen_ph.length === 1) {
     Q.fcall(this._handler.py_gen_ph.bind(this._handler),
-      args.inputs
+      args.dic
     ).then(function(result) {
       var result_obj = new userService_py_gen_ph_result({success: result});
       output.writeMessageBegin("py_gen_ph", Thrift.MessageType.REPLY, seqid);
@@ -220,7 +220,7 @@ userServiceProcessor.prototype.process_py_gen_ph = function(seqid, input, output
       output.flush();
     });
   } else {
-    this._handler.py_gen_ph(args.inputs, function (err, result) {
+    this._handler.py_gen_ph(args.dic, function (err, result) {
       var result_obj;
       if ((err === null || typeof err === 'undefined')) {
         result_obj = new userService_py_gen_ph_result((err !== null || typeof err === 'undefined') ? err : {success: result});

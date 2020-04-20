@@ -23,22 +23,22 @@ from generate_class import genModel
 
 
 class pyModel(genModel):
-    def py_gen_ph(self, dic):
+    def py_gen_ph(self, dic, *args):
+        # use args to prevent thrift generating unwanted params
         dic = json.loads(dic)
         inputs = dic["inputs"]
-        # length = int(dic["length"])
-        # temp = float(dic["temp"])
-        # topk = int(dic["topk"])
-        # topp = float(dic["topp"])
-        # strr = self.gen_ph(inputs, length=length, temperature=temp, topk=topk, topp=topp)
-        strr = self.gen_ph(inputs, length=100, temperature=1.5, topk=2, topp=1.)
+        length = int(dic["length"])
+        temp = float(dic["temp"])
+        topk = int(dic["topk"])
+        topp = float(dic["topp"])
+        strr = self.gen_ph(inputs, length=length, temperature=temp, topk=topk, topp=topp)
         return strr
 
 
 if __name__ == "__main__":
     # Init class process
     print("Starting server in python...")
-    handler = pyModel(model_path='./GPT2-Chinese//model/model_epoch7', tokenizer_path='./GPT2-Chinese//model/model_epoch7/vocab.txt')
+    handler = pyModel(model_path='./GPT2-Chinese/model/model_epoch7', tokenizer_path='./GPT2-Chinese/model/model_epoch7/vocab.txt')
     processor = userService.Processor(handler)
 
     # Transport layer

@@ -34,17 +34,20 @@ function bindListItem(num) {
     btnClr.addEventListener('click', () => {
         textin.value = ''
         result.value = ''
+        iconLamp.className = "icon icon-lamp"
+        btnGen.disabled = false
     })
 
     // Generate button
     btnGen.addEventListener('click', () => {
         let dic = {
-            inputs: textin.value
-            // length: document.querySelector('#sldLen').value,
-            // temp: document.querySelector('#sldTmp').value / 10,
-            // topk: document.querySelector('#sldTpk').value,
-            // topp: document.querySelector('#sldTpp').value / 10
+            inputs: textin.value,
+            length: document.querySelector('#sldLen').value,
+            temp: document.querySelector('#sldTmp').value / 10,
+            topk: document.querySelector('#sldTpk').value,
+            topp: document.querySelector('#sldTpp').value / 10
         }
+        // use JSON protocol to put all vars inside a dictionary
         dic = JSON.stringify(dic)
 
         // Show loading animation

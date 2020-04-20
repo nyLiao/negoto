@@ -19,10 +19,10 @@ all_structs = []
 
 
 class Iface(object):
-    def py_gen_ph(self, inputs):
+    def py_gen_ph(self, dic):
         """
         Parameters:
-         - inputs
+         - dic
 
         """
         pass
@@ -35,19 +35,19 @@ class Client(Iface):
             self._oprot = oprot
         self._seqid = 0
 
-    def py_gen_ph(self, inputs):
+    def py_gen_ph(self, dic):
         """
         Parameters:
-         - inputs
+         - dic
 
         """
-        self.send_py_gen_ph(inputs)
+        self.send_py_gen_ph(dic)
         return self.recv_py_gen_ph()
 
-    def send_py_gen_ph(self, inputs):
+    def send_py_gen_ph(self, dic):
         self._oprot.writeMessageBegin('py_gen_ph', TMessageType.CALL, self._seqid)
         args = py_gen_ph_args()
-        args.inputs = inputs
+        args.dic = dic
         args.write(self._oprot)
         self._oprot.writeMessageEnd()
         self._oprot.trans.flush()
@@ -95,7 +95,7 @@ class Processor(Iface, TProcessor):
         iprot.readMessageEnd()
         result = py_gen_ph_result()
         try:
-            result.success = self._handler.py_gen_ph(args.inputs)
+            result.success = self._handler.py_gen_ph(args.dic)
             msg_type = TMessageType.REPLY
         except TTransport.TTransportException:
             raise
@@ -118,13 +118,13 @@ class Processor(Iface, TProcessor):
 class py_gen_ph_args(object):
     """
     Attributes:
-     - inputs
+     - dic
 
     """
 
 
-    def __init__(self, inputs=None,):
-        self.inputs = inputs
+    def __init__(self, dic=None,):
+        self.dic = dic
 
     def read(self, iprot):
         if iprot._fast_decode is not None and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None:
@@ -137,7 +137,7 @@ class py_gen_ph_args(object):
                 break
             if fid == 1:
                 if ftype == TType.STRING:
-                    self.inputs = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
+                    self.dic = iprot.readString().decode('utf-8') if sys.version_info[0] == 2 else iprot.readString()
                 else:
                     iprot.skip(ftype)
             else:
@@ -150,9 +150,9 @@ class py_gen_ph_args(object):
             oprot.trans.write(oprot._fast_encode(self, [self.__class__, self.thrift_spec]))
             return
         oprot.writeStructBegin('py_gen_ph_args')
-        if self.inputs is not None:
-            oprot.writeFieldBegin('inputs', TType.STRING, 1)
-            oprot.writeString(self.inputs.encode('utf-8') if sys.version_info[0] == 2 else self.inputs)
+        if self.dic is not None:
+            oprot.writeFieldBegin('dic', TType.STRING, 1)
+            oprot.writeString(self.dic.encode('utf-8') if sys.version_info[0] == 2 else self.dic)
             oprot.writeFieldEnd()
         oprot.writeFieldStop()
         oprot.writeStructEnd()
@@ -173,7 +173,7 @@ class py_gen_ph_args(object):
 all_structs.append(py_gen_ph_args)
 py_gen_ph_args.thrift_spec = (
     None,  # 0
-    (1, TType.STRING, 'inputs', 'UTF8', None, ),  # 1
+    (1, TType.STRING, 'dic', 'UTF8', None, ),  # 1
 )
 
 
