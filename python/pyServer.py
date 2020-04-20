@@ -10,7 +10,7 @@ sys.path.append('gen_py')
 # sys.path.insert(0, glob.glob('../lib/py/build/lib*')[0])
 
 import json
-import time
+import sys
 from thrift.transport import TSocket
 from thrift.transport import TTransport
 from thrift.protocol import TBinaryProtocol
@@ -22,7 +22,11 @@ sys.path.append('./GPT2-Chinese/')
 from generate_class import genModel
 
 
-class pyModel(genModel):
+MODEL7_PATH = './GPT2-Chinese/model/model_epoch7'
+TOKEN7_PATH = './GPT2-Chinese/model/model_epoch7/vocab.txt'
+
+
+class pyModelHandler(genModel):
     def py_gen_ph(self, dic, *args):
         # use args to prevent thrift generating unwanted params
         dic = json.loads(dic)
@@ -35,10 +39,12 @@ class pyModel(genModel):
         return strr
 
 
+print("Starting main in python...")
+
 if __name__ == "__main__":
     # Init class process
     print("Starting server in python...")
-    handler = pyModel(model_path='./GPT2-Chinese/model/model_epoch7', tokenizer_path='./GPT2-Chinese/model/model_epoch7/vocab.txt')
+    handler = pyModelHandler(model_path=MODEL7_PATH, tokenizer_path=TOKEN7_PATH)
     processor = userService.Processor(handler)
 
     # Transport layer

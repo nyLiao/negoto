@@ -1,11 +1,14 @@
 'use strict';
 const path = require('path');
+const child_process = require('child_process')
+
 const {app, BrowserWindow, Menu} = require('electron');
 /// const {autoUpdater} = require('electron-updater');
 // const {is} = require('electron-util');
 const unhandled = require('electron-unhandled');
 const debug = require('electron-debug');
 const contextMenu = require('electron-context-menu');
+
 const config = require('./js/config');
 const menu = require('./js/menu');
 
@@ -25,9 +28,9 @@ contextMenu();
 // 	autoUpdater.checkForUpdates();
 // }
 
-// Prevent window from being garbage collected
+// Window management
 let mainWindow;
-
+// Prevent window from being garbage collected
 const createMainWindow = async () => {
 	const win = new BrowserWindow({
 		title: app.name,
@@ -45,72 +48,76 @@ const createMainWindow = async () => {
 	win.on('ready-to-show', () => {
 		win.show();
 	});
-
 	win.on('closed', () => {
 		// Dereference the window
 		// For multiple windows store them in an array
 		mainWindow = undefined;
 	});
-
 	await win.loadFile(path.join(__dirname, 'index.html'));
-
 	return win;
 };
 
+// App management
 // Prevent multiple instances of the app
 if (!app.requestSingleInstanceLock()) {
 	app.quit();
 }
-
 app.on('second-instance', () => {
 	if (mainWindow) {
 		if (mainWindow.isMinimized()) {
 			mainWindow.restore();
 		}
-
 		mainWindow.show();
 	}
 });
-
 // app.on('window-all-closed', () => {
 // 	if (!is.macos) {
 // 		app.quit();
 // 	}
-// });
-
+// })
 app.on('activate', async () => {
 	if (!mainWindow) {
 		mainWindow = await createMainWindow();
 	}
 });
-
 (async () => {
 	await app.whenReady();
 	Menu.setApplicationMenu(menu);
 	mainWindow = await createMainWindow();
+})()
 
-	// const favoriteAnimal = config.get('favoriteAnimal');
-	// mainWindow.webContents.executeJavaScript(`document.querySelector('header p').textContent = 'Your favorite animal is ${favoriteAnimal}'`);
-})();
 
-// Run a python child process
-let pyProc = null
-let pyPort = null
+// Run a python server as child process
+var pyProc = null
+var pyPort = null
+config.set('serverStarted', false)
 
-const createPyProc = () => {
-  let port = '6161'
-  let script = path.join(__dirname, 'python', 'api.py')
-  pyProc = require('child_process').spawn('python', [script, port])
-  if (pyProc != null) {
-    console.log('child process success')
-  }
-}
+app.on('ready', () => {
+	let port = '6161'
+	let script = path.join(__dirname, 'python', 'pyServer.py')
 
-const exitPyProc = () => {
-  pyProc.kill()
-  pyProc = null
-  pyPort = null
-}
-
-app.on('ready', createPyProc)
-app.on('will-quit', exitPyProc)
+	pyProc = child_process.spawn('python', ['-u', script, port])
+	if (pyProc != null) {
+		console.log('Child process success')
+		pyProc.stdout.on('data', (data) => {
+			let dataStr = data.toString()
+			console.log(dataStr)
+			if (dataStr.indexOf('started') != -1) {
+				config.set('serverStarted', true)
+				console.log("set")
+			}
+		})
+		pyProc.stderr.on('data', (data) => {
+			console.log('PyProc Error:\n' + data)
+		})
+	}
+	else {
+		console.log('Child process failed')
+	}
+})
+app.on('will-quit', () => {
+	pyProc.kill()
+	pyProc = null
+	pyPort = null
+	console.log('PyProc exited')
+})

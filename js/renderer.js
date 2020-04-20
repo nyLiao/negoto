@@ -6,6 +6,9 @@ const events = require('events')
 const fs = require('fs')
 const thrift = require('thrift')
 
+const config = require('./config');
+const userService = require('./gen_nodejs/userService.js')
+
 // Init
 var eventEmitter = new events.EventEmitter()    // event manager watching textarea value
 var numListItem = 0                             // number of current li
@@ -13,12 +16,34 @@ newListItem()                                   // new two init list items
 newListItem()
 
 // Establish thrift client
-var userService = require('./gen_nodejs/userService.js')
-var thriftConnection = thrift.createConnection('127.0.0.1', 6161)
-var thriftClient = thrift.createClient(userService, thriftConnection)
-thriftConnection.on("error", function(e) {
-    console.log('Thrift Error:\n' + e)
-});
+var thriftConnection = null
+var thriftClient = null
+for (var i = 0; i < document.querySelectorAll(".btn-primary").length; i++) {
+    btnDisable(document.querySelectorAll(".btn-primary")[i])
+}
+config.onDidChange('serverStarted', async (newValue, oldValue) => {
+    if (newValue) {
+        thriftConnection = thrift.createConnection('127.0.0.1', 6161)
+        thriftClient = thrift.createClient(userService, thriftConnection)
+        thriftConnection.on("error", function(e) {
+            console.log('Thrift Error:\n' + e)
+        })
+
+        for (var i = 0; i < document.querySelectorAll(".btn-primary").length; i++) {
+            btnEnable(document.querySelectorAll(".btn-primary")[i])
+        }
+    }
+})
+
+function btnEnable(btnGen) {
+    btnGen.disabled = false
+    btnGen.querySelector('.icon-lamp').className = "icon icon-lamp"
+}
+
+function btnDisable(btnGen) {
+    btnGen.disabled = true
+    btnGen.querySelector('.icon-lamp').className = "icon icon-lamp loading"
+}
 
 // Bind list item activities
 function bindListItem(num) {
@@ -28,14 +53,12 @@ function bindListItem(num) {
     let result = li.querySelector('.textout')
     let btnClr = li.querySelector('.btn-default')
     let btnGen = li.querySelector('.btn-primary')
-    let iconLamp = btnGen.querySelector('.icon-lamp')
 
     // Clear button
     btnClr.addEventListener('click', () => {
         textin.value = ''
         result.value = ''
-        iconLamp.className = "icon icon-lamp"
-        btnGen.disabled = false
+        btnEnable(btnGen)
     })
 
     // Generate button
@@ -51,8 +74,7 @@ function bindListItem(num) {
         dic = JSON.stringify(dic)
 
         // Show loading animation
-        iconLamp.className = "icon icon-lamp loading"
-        btnGen.disabled = true
+        btnDisable(btnGen)
 
         // Get result
         result.value = ''
@@ -67,8 +89,7 @@ function bindListItem(num) {
     })
     // Stop loading animation
     eventEmitter.on('generated', function() {
-        iconLamp.className = "icon icon-lamp"
-        btnGen.disabled = false
+        btnEnable(btnGen)
     })
 }
 
