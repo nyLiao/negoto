@@ -89,8 +89,8 @@ app.on('activate', async () => {
 
 // Run a python server as child process
 var pyProc = null
-var pyPort = null
 config.set('serverStarted', false)
+config.set('genProgress', -1)
 
 app.on('ready', () => {
 	let port = '6161'
@@ -98,13 +98,29 @@ app.on('ready', () => {
 
 	pyProc = child_process.spawn('python', ['-u', script, port])
 	if (pyProc != null) {
-		console.log('Child process success')
+		console.log('Child process success.')
 		pyProc.stdout.on('data', (data) => {
 			let dataStr = data.toString()
-			console.log(dataStr)
 			if (dataStr.indexOf('started') != -1) {
 				config.set('serverStarted', true)
-				console.log("set")
+				console.log("Server started. Flag set: " + config.get('serverStarted'))
+			}
+			else if (dataStr.indexOf('=i') != -1) {
+				let val = parseInt(dataStr)
+				// electron-store does not work, so choose executeJavaScript()
+				// config.set('genProgress', val)
+				// console.log("Progress set: " + config.get('genProgress'))
+				mainWindow.webContents.executeJavaScript(
+					`for (var i = 0; i < document.querySelectorAll(".progress-num").length; i++) {
+						document.querySelectorAll(".progress-num")[i].innerHTML = ${val}+"%"}`
+					)
+				mainWindow.webContents.executeJavaScript(
+					`for (var i = 0; i < document.querySelectorAll("progress").length; i++) {
+						document.querySelectorAll("progress")[i].value = ${val}}`
+					)
+			}
+			else {
+				console.log(dataStr)
 			}
 		})
 		pyProc.stderr.on('data', (data) => {
@@ -112,12 +128,11 @@ app.on('ready', () => {
 		})
 	}
 	else {
-		console.log('Child process failed')
+		console.log('Child process failed.')
 	}
 })
 app.on('will-quit', () => {
 	pyProc.kill()
 	pyProc = null
-	pyPort = null
-	console.log('PyProc exited')
+	console.log('PyProc exited.')
 })

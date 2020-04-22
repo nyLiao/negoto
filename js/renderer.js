@@ -5,8 +5,9 @@
 const events = require('events')
 const fs = require('fs')
 const thrift = require('thrift')
+const child_process = require('child_process')
 
-const config = require('./config');
+const config = require('./config.js');
 const userService = require('./gen_nodejs/userService.js')
 
 // Init
@@ -18,9 +19,11 @@ newListItem()
 // Establish thrift client
 var thriftConnection = null
 var thriftClient = null
+// Disable buttons
 for (var i = 0; i < document.querySelectorAll(".btn-primary").length; i++) {
     btnDisable(document.querySelectorAll(".btn-primary")[i])
 }
+// Watch to connect
 config.onDidChange('serverStarted', async (newValue, oldValue) => {
     if (newValue) {
         thriftConnection = thrift.createConnection('127.0.0.1', 6161)
@@ -28,12 +31,18 @@ config.onDidChange('serverStarted', async (newValue, oldValue) => {
         thriftConnection.on("error", function(e) {
             console.log('Thrift Error:\n' + e)
         })
-
+        // Enable buttons
         for (var i = 0; i < document.querySelectorAll(".btn-primary").length; i++) {
             btnEnable(document.querySelectorAll(".btn-primary")[i])
         }
     }
 })
+
+// document.querySelector("#pro").innerHTML = config.get('progress')
+// config.onDidChange('progress', (newValue, oldValue) => {
+//     document.querySelector("#pro").innerHTML = newValue
+//     console.log("changed: " + newValue);
+// })
 
 function btnEnable(btnGen) {
     btnGen.disabled = false
@@ -43,6 +52,24 @@ function btnEnable(btnGen) {
 function btnDisable(btnGen) {
     btnGen.disabled = true
     btnGen.querySelector('.icon-lamp').className = "icon icon-lamp loading"
+}
+
+function lstEnable(li) {
+    li.querySelector('.textout').disabled = false
+    li.querySelector('.text-mask').style.display = "none"
+
+}
+
+function lstDisable(li) {
+    li.querySelector('.textout').disabled = true
+    li.querySelector('.text-mask').style.display = "block"
+
+    // electron-store does not work
+    // let prgbar = li.querySelector('progress')
+    // config.onDidChange('genProgress', (newValue, oldValue) => {
+    //     prgbar.value = newValue
+    //     console.log("changed: " + newValue);
+    // })
 }
 
 // Bind list item activities
@@ -74,6 +101,7 @@ function bindListItem(num) {
         dic = JSON.stringify(dic)
 
         // Show loading animation
+        lstDisable(li)
         btnDisable(btnGen)
 
         // Get result
@@ -89,6 +117,7 @@ function bindListItem(num) {
     })
     // Stop loading animation
     eventEmitter.on('generated', function() {
+        lstEnable(li)
         btnEnable(btnGen)
     })
 }
@@ -110,6 +139,19 @@ function newListItem() {
     textin.setAttribute("class", "form-control textin")
     textin.setAttribute("placeholder", "Input beginning...")
     li.appendChild(textin)
+
+    let textmsk = document.createElement("div")
+    textmsk.setAttribute("class", "text-mask")
+    li.appendChild(textmsk)
+
+    let prgnum = document.createElement("div")
+    prgnum.setAttribute("class", "progress-num")
+    textmsk.appendChild(prgnum)
+
+    let prgbar = document.createElement("progress")
+    prgbar.setAttribute("value", "0")
+    prgbar.setAttribute("max", "100")
+    textmsk.appendChild(prgbar)
 
     let textout = document.createElement("textarea")
     textout.setAttribute("class", "form-control textout")

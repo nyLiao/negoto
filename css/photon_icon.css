@@ -502,9 +502,6 @@
 .icon-lamp:before {
   content: '\e864';
 }
-.loading {
-  animation: spin 2s linear infinite;
-}
 
 /* '' */
 .icon-light-down:before {
