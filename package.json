@@ -1,7 +1,7 @@
 {
-    "name": "SomeTextGenerator",
-    "version": "0.1.0",
-    "description": "Generate some text!",
+    "name": "negoto",
+    "version": "1.0.0",
+    "description": "The text generator based on GPT-2 model",
     "license": "MIT",
     "author": {
         "name": "nyLiao",

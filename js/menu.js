@@ -50,7 +50,7 @@ if (!is.macos) {
 			type: 'separator'
 		},
 		aboutMenuItem({
-			icon: path.join(__dirname, 'static', 'icon.png'),
+			icon: path.join(__dirname, 'docs', 'icon.png'),
 			text: 'Created by Your Name'
 		})
 	);

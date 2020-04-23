@@ -12,10 +12,10 @@ const contextMenu = require('electron-context-menu');
 const config = require('./js/config');
 const menu = require('./js/menu');
 
-unhandled();
-debug();
-contextMenu();
 
+unhandled();
+// debug();
+contextMenu();
 
 // Uncomment this before publishing your first version.
 // It's commented out as it throws an error if there are no published versions.
@@ -39,6 +39,7 @@ const createMainWindow = async () => {
 		height: 900,
 		'min-width': 200,
 	    'min-height': 100,
+		icon: path.join(__dirname, 'docs', 'icon.png'),
 		// 'title-bar-style': 'hidden',
 		webPreferences: {
             nodeIntegration: true

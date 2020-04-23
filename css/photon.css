@@ -159,7 +159,7 @@ hr {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  margin-top: 20px;
+  margin-top: 10px;
   margin-bottom: 10px;
   font-weight: 500;
   white-space: nowrap;
@@ -697,6 +697,8 @@ textarea {
 
 img {
   -webkit-user-drag: text;
+  margin: 0 auto;
+  text-align: center;
 }
 
 .img-circle {
@@ -792,8 +794,8 @@ img {
 
 @font-face {
   font-family: "photon-entypo";
-  src: url("../fonts/photon-entypo.eot");
-  src: url("../fonts/photon-entypo.eot?#iefix") format("eot"), url("../fonts/photon-entypo.woff") format("woff"), url("../fonts/photon-entypo.ttf") format("truetype");
+  src: url("./fonts/photon-entypo.eot");
+  src: url("./fonts/photon-entypo.eot?#iefix") format("eot"), url("./fonts/photon-entypo.woff") format("woff"), url("./fonts/photon-entypo.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
 }
