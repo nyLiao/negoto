@@ -113,6 +113,56 @@ userService_py_gen_ph_result.prototype.write = function(output) {
   return;
 };
 
+var userService_clear_args = function(args) {
+};
+userService_clear_args.prototype = {};
+userService_clear_args.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true) {
+    var ret = input.readFieldBegin();
+    var ftype = ret.ftype;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    input.skip(ftype);
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+userService_clear_args.prototype.write = function(output) {
+  output.writeStructBegin('userService_clear_args');
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
+var userService_clear_result = function(args) {
+};
+userService_clear_result.prototype = {};
+userService_clear_result.prototype.read = function(input) {
+  input.readStructBegin();
+  while (true) {
+    var ret = input.readFieldBegin();
+    var ftype = ret.ftype;
+    if (ftype == Thrift.Type.STOP) {
+      break;
+    }
+    input.skip(ftype);
+    input.readFieldEnd();
+  }
+  input.readStructEnd();
+  return;
+};
+
+userService_clear_result.prototype.write = function(output) {
+  output.writeStructBegin('userService_clear_result');
+  output.writeFieldStop();
+  output.writeStructEnd();
+  return;
+};
+
 var userServiceClient = exports.Client = function(output, pClass) {
   this.output = output;
   this.pClass = pClass;
@@ -181,6 +231,59 @@ userServiceClient.prototype.recv_py_gen_ph = function(input,mtype,rseqid) {
   }
   return callback('py_gen_ph failed: unknown result');
 };
+
+userServiceClient.prototype.clear = function(callback) {
+  this._seqid = this.new_seqid();
+  if (callback === undefined) {
+    var _defer = Q.defer();
+    this._reqs[this.seqid()] = function(error, result) {
+      if (error) {
+        _defer.reject(error);
+      } else {
+        _defer.resolve(result);
+      }
+    };
+    this.send_clear();
+    return _defer.promise;
+  } else {
+    this._reqs[this.seqid()] = callback;
+    this.send_clear();
+  }
+};
+
+userServiceClient.prototype.send_clear = function() {
+  var output = new this.pClass(this.output);
+  var args = new userService_clear_args();
+  try {
+    output.writeMessageBegin('clear', Thrift.MessageType.CALL, this.seqid());
+    args.write(output);
+    output.writeMessageEnd();
+    return this.output.flush();
+  }
+  catch (e) {
+    delete this._reqs[this.seqid()];
+    if (typeof output.reset === 'function') {
+      output.reset();
+    }
+    throw e;
+  }
+};
+
+userServiceClient.prototype.recv_clear = function(input,mtype,rseqid) {
+  var callback = this._reqs[rseqid] || function() {};
+  delete this._reqs[rseqid];
+  if (mtype == Thrift.MessageType.EXCEPTION) {
+    var x = new Thrift.TApplicationException();
+    x.read(input);
+    input.readMessageEnd();
+    return callback(x);
+  }
+  var result = new userService_clear_result();
+  result.read(input);
+  input.readMessageEnd();
+
+  callback(null);
+};
 var userServiceProcessor = exports.Processor = function(handler) {
   this._handler = handler;
 };
@@ -228,6 +331,42 @@ userServiceProcessor.prototype.process_py_gen_ph = function(seqid, input, output
       } else {
         result_obj = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
         output.writeMessageBegin("py_gen_ph", Thrift.MessageType.EXCEPTION, seqid);
+      }
+      result_obj.write(output);
+      output.writeMessageEnd();
+      output.flush();
+    });
+  }
+};
+userServiceProcessor.prototype.process_clear = function(seqid, input, output) {
+  var args = new userService_clear_args();
+  args.read(input);
+  input.readMessageEnd();
+  if (this._handler.clear.length === 0) {
+    Q.fcall(this._handler.clear.bind(this._handler)
+    ).then(function(result) {
+      var result_obj = new userService_clear_result({success: result});
+      output.writeMessageBegin("clear", Thrift.MessageType.REPLY, seqid);
+      result_obj.write(output);
+      output.writeMessageEnd();
+      output.flush();
+    }).catch(function (err) {
+      var result;
+      result = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+      output.writeMessageBegin("clear", Thrift.MessageType.EXCEPTION, seqid);
+      result.write(output);
+      output.writeMessageEnd();
+      output.flush();
+    });
+  } else {
+    this._handler.clear(function (err, result) {
+      var result_obj;
+      if ((err === null || typeof err === 'undefined')) {
+        result_obj = new userService_clear_result((err !== null || typeof err === 'undefined') ? err : {success: result});
+        output.writeMessageBegin("clear", Thrift.MessageType.REPLY, seqid);
+      } else {
+        result_obj = new Thrift.TApplicationException(Thrift.TApplicationExceptionType.UNKNOWN, err.message);
+        output.writeMessageBegin("clear", Thrift.MessageType.EXCEPTION, seqid);
       }
       result_obj.write(output);
       output.writeMessageEnd();

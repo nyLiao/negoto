@@ -25,6 +25,7 @@ if len(sys.argv) <= 1 or sys.argv[1] == '--help':
     print('')
     print('Functions:')
     print('  string py_gen_ph(string dic)')
+    print('  void clear()')
     print('')
     sys.exit(0)
 
@@ -109,6 +110,12 @@ if cmd == 'py_gen_ph':
         print('py_gen_ph requires 1 args')
         sys.exit(1)
     pp.pprint(client.py_gen_ph(args[0],))
+
+elif cmd == 'clear':
+    if len(args) != 0:
+        print('clear requires 0 args')
+        sys.exit(1)
+    pp.pprint(client.clear())
 
 else:
     print('Unrecognized method %s' % cmd)

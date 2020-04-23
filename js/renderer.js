@@ -7,7 +7,7 @@ const fs = require('fs')
 const thrift = require('thrift')
 const child_process = require('child_process')
 
-const config = require('./config.js');
+const config = require('./config.js')
 const userService = require('./gen_nodejs/userService.js')
 
 // Init
@@ -68,7 +68,7 @@ function lstDisable(li) {
     // let prgbar = li.querySelector('progress')
     // config.onDidChange('genProgress', (newValue, oldValue) => {
     //     prgbar.value = newValue
-    //     console.log("changed: " + newValue);
+    //     console.log("changed: " + newValue)
     // })
 }
 
@@ -191,7 +191,14 @@ document.getElementById('btnRfr').onclick = () => {
     for (var i = 0; i < document.querySelectorAll("textarea").length; i++) {
         document.querySelectorAll("textarea")[i].value = ''
     }
-    // TODO: model init
+    // Model init
+    thriftClient.clear((error, res) => {
+        if (error) {
+            console.error(error)
+        } else {
+            console.log('Model cleared.')
+        }
+    })
 }
 
 // Export text to txt
